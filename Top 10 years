@@ -1,0 +1,1 @@
+c.execute('SELECT count(year),year FROM meteor group by year order by count(year) DESC limit 10;') #displays number of hits alongside top 10 years
