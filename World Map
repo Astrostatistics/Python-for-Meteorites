@@ -1,0 +1,21 @@
+import sqlite3
+import pandas as pd
+from bokeh.io import output_file, show
+from bokeh.models import (GMapPlot, GMapOptions, ColumnDataSource, Circle, DataRange1d, PanTool, WheelZoomTool, BoxSelectTool)
+conn=sqlite3.connect('meteorit.db') #connects the database
+c=conn.cursor()
+map_options = GMapOptions(map_type="roadmap", zoom=3) #specifies type of map and zoom level
+plot = GMapPlot(x_range=DataRange1d(), y_range=DataRange1d(), map_options=map_options)
+plot.title.text = "World Map"
+plot.api_key = "Your API Key" #inserts unique API key
+c.execute('select reclat,reclong from meteor where reclat>0 and reclong>0') #selects lat and long
+data=c.fetchall()
+df=pd.DataFrame(data, columns= ['reclat','reclong']) #inserts into a dataframe
+source = ColumnDataSource(df)
+circle = Circle(x="reclat", y="reclong", size=15, fill_color="blue", fill_alpha=0.8)
+plot.add_glyph(source, circle) #plots the values
+plot.add_tools(PanTool(), WheelZoomTool(), BoxSelectTool()) #tools to make the map interactive
+output_file("Meteorites.html")
+show(plot)
+conn.commit()
+conn.close()
