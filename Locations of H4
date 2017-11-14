@@ -1,0 +1,1 @@
+c.execute('select distinct reclat, reclong from meteor where year=1979 and recclass="H4"') #extracts locations of H4 in the year 1979
