@@ -1,0 +1,3 @@
+c.execute(‘delete from meteor where year<860 and year>2016) #filters incorrect years
+c.execute(‘delete from meteor where reclong>180 and reclong<-180) # filters incorrect locations
+c.execute(‘delete from meteor where reclong=0 and reclat=0’) #filters out incorrect locations
