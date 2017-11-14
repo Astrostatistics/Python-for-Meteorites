@@ -1,0 +1,1 @@
+c.execute('select recclass from meteor where year=1979 group by recclass order by count(recclass) DESC limit 1') #selects top class in the year 1979
