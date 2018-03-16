@@ -1,0 +1,45 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+#importing the dataset
+
+df=pd.read_csv('C:\\Users\\Sharmila\\Desktop\\meteorite-landings.csv')
+
+#replacing missing values
+
+#df.replace('',-99999, inplace=True)
+#df.replace('NaN',-99999, inplace=True)
+#df.replace('0.0',-99999, inplace=True)
+df['mass'] = df.mass.replace(np.NaN, '-99999')
+df['year'] = df.year.replace(np.NaN, '-99999')
+df['reclat'] = df.reclat.replace(np.NaN, '-99999')
+df['reclong'] = df.reclong.replace(np.NaN, '-99999')
+
+#are there any null values left?
+
+# df.isnull().any() 
+
+#
+X = np.array(df.drop(['fall'], 1))
+y = np.array(df['fall'])
+from sklearn import preprocessing, cross_validation, neighbors
+
+from sklearn.preprocessing import LabelEncoder
+labelencoder_y = LabelEncoder()
+y = labelencoder_y.fit_transform(y)
+from sklearn.preprocessing import LabelEncoder
+labelencoder_X = LabelEncoder()
+X[:, 1] = labelencoder_X.fit_transform(X[:,1])
+X[:, 2] = labelencoder_X.fit_transform(X[:,2])
+
+X_train, X_test, y_train, y_test = cross_validation.train_test_split(X, y, test_size=0.2)
+clf = neighbors.KNeighborsClassifier()
+clf.fit(X_train, y_train)
+accuracy = clf.score(X_test, y_test)
+print(accuracy)
+
+example_measures = np.array([10000000,2,327,500,700,50.22,90.333])
+example_measures = example_measures.reshape(1, -1)
+prediction = clf.predict(example_measures)
+print(prediction)
